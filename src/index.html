@@ -1,13 +1,746 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <title>Siteweb</title>
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ÉtudiantAnnonces — La plateforme d'annonces pour étudiants</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --brand: #1D9E75;
+      --brand-light: #E1F5EE;
+      --brand-dark: #085041;
+      --accent: #D85A30;
+      --accent-light: #FAECE7;
+      --accent-dark: #4A1B0C;
+      --purple: #534AB7;
+      --purple-light: #EEEDFE;
+      --purple-dark: #26215C;
+      --bg: #F7F7F5;
+      --surface: #FFFFFF;
+      --text: #1a1a18;
+      --text-muted: #6b6b67;
+      --text-hint: #a0a09c;
+      --border: rgba(0,0,0,0.10);
+      --border-md: rgba(0,0,0,0.18);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* ── LAYOUT ── */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+    }
+
+    /* ── NAV ── */
+    nav {
+      background: var(--surface);
+      border-bottom: 0.5px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 0;
+    }
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 20px;
+      color: var(--brand);
+      letter-spacing: -0.5px;
+    }
+    .logo span { color: var(--text); }
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+    .nav-links a {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      background: var(--brand) !important;
+      color: white !important;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .nav-cta:hover { opacity: 0.88; }
+
+    /* ── HERO ── */
+    .hero {
+      text-align: center;
+      padding: 4rem 1rem 3rem;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--brand-light);
+      color: var(--brand-dark);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 14px;
+      border-radius: 20px;
+      margin-bottom: 1.5rem;
+    }
+    .hero-badge .dot {
+      width: 7px; height: 7px;
+      background: var(--brand);
+      border-radius: 50%;
+    }
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(30px, 5.5vw, 50px);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      color: var(--text);
+      margin-bottom: 1.1rem;
+    }
+    .hero h1 em {
+      color: var(--brand);
+      font-style: normal;
+    }
+    .hero p {
+      font-size: 16px;
+      color: var(--text-muted);
+      max-width: 500px;
+      margin: 0 auto 2rem;
+      line-height: 1.65;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+    .btn-primary {
+      background: var(--brand);
+      color: white;
+      border: none;
+      padding: 13px 26px;
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .btn-primary:hover { opacity: 0.88; }
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--text);
+      border: 0.5px solid var(--border-md);
+      padding: 13px 26px;
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-secondary:hover { background: #f0f0ee; }
+
+    /* ── SEARCH ── */
+    .search-wrap {
+      background: var(--surface);
+      border: 0.5px solid var(--border-md);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 6px 6px 16px;
+      max-width: 580px;
+      margin: 0 auto;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    .search-wrap svg { flex-shrink: 0; color: var(--text-hint); }
+    .search-wrap input {
+      border: none;
+      background: transparent;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: var(--text);
+      flex: 1;
+      outline: none;
+    }
+    .search-wrap input::placeholder { color: var(--text-hint); }
+    .search-btn {
+      background: var(--brand);
+      color: white;
+      border: none;
+      padding: 9px 20px;
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .search-btn:hover { opacity: 0.88; }
+
+    /* ── STATS ── */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 2.5rem 0;
+    }
+    .stat {
+      background: var(--surface);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.1rem;
+      text-align: center;
+    }
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--brand);
+    }
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    /* ── SECTION HEADING ── */
+    .section-heading { margin-bottom: 1.5rem; }
+    .section-heading h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 4px;
+    }
+    .section-heading p {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    /* ── THREE CATEGORY CARDS ── */
+    .three-cols {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+      margin-bottom: 3rem;
+    }
+    .cat-card {
+      background: var(--surface);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      transition: border-color 0.15s, transform 0.15s;
+      cursor: pointer;
+    }
+    .cat-card:hover {
+      border-color: var(--border-md);
+      transform: translateY(-2px);
+    }
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 1.1rem;
+    }
+    .icon-wrap {
+      width: 54px; height: 54px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .icon-wrap.green { background: var(--brand-light); }
+    .icon-wrap.orange { background: var(--accent-light); }
+    .icon-wrap.purple { background: var(--purple-light); }
+    .cat-badge {
+      font-size: 11px;
+      font-weight: 500;
+      padding: 4px 9px;
+      border-radius: 6px;
+    }
+    .cat-badge.green { background: var(--brand-light); color: var(--brand-dark); }
+    .cat-badge.orange { background: var(--accent-light); color: var(--accent-dark); }
+    .cat-badge.purple { background: var(--purple-light); color: var(--purple-dark); }
+    .cat-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 7px;
+    }
+    .cat-card > p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.55;
+      margin-bottom: 1rem;
+    }
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 1.1rem;
+    }
+    .tag {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 0.5px solid var(--border);
+      color: var(--text-muted);
+      background: var(--bg);
+    }
+    .cat-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .cat-link.green { color: var(--brand); }
+    .cat-link.orange { color: var(--accent); }
+    .cat-link.purple { color: var(--purple); }
+
+    /* ── HOW IT WORKS ── */
+    .how-wrap {
+      background: var(--surface);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      margin-bottom: 3rem;
+    }
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 1.75rem;
+      margin-top: 1.5rem;
+    }
+    .step { text-align: center; }
+    .step-num {
+      width: 34px; height: 34px;
+      background: var(--brand-light);
+      color: var(--brand-dark);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      margin: 0 auto 10px;
+    }
+    .step h4 {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+    .step p {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    /* ── LATEST LISTINGS ── */
+    .listings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 12px;
+      margin-bottom: 3rem;
+    }
+    .listing-card {
+      background: var(--surface);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.1rem;
+      transition: border-color 0.15s;
+      cursor: pointer;
+    }
+    .listing-card:hover { border-color: var(--border-md); }
+    .listing-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .listing-cat {
+      font-size: 10px;
+      font-weight: 500;
+      padding: 3px 8px;
+      border-radius: 5px;
+    }
+    .listing-time {
+      font-size: 10px;
+      color: var(--text-hint);
+    }
+    .listing-card h4 {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 4px;
+      line-height: 1.35;
+    }
+    .listing-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .listing-price {
+      font-family: 'Syne', sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      margin-top: 10px;
+    }
+
+    /* ── TRUST BANNER ── */
+    .trust {
+      background: var(--brand-light);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .trust h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--brand-dark);
+      margin-bottom: 8px;
+    }
+    .trust > p {
+      font-size: 13px;
+      color: #0F6E56;
+      margin-bottom: 1.5rem;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .trust-items {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .trust-item {
+      font-size: 13px;
+      color: var(--brand-dark);
+      font-weight: 500;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 0.5px solid var(--border);
+      padding: 1.5rem 0 2.5rem;
+    }
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 16px;
+      color: var(--brand);
+    }
+    .footer-links {
+      display: flex;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+    .footer-links a {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .footer-links a:hover { color: var(--text); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .stats { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      .stat-num { font-size: 20px; }
+      .three-cols { grid-template-columns: 1fr; }
+      .steps { grid-template-columns: 1fr 1fr; }
+      .listings-grid { grid-template-columns: 1fr 1fr; }
+      .trust-items { gap: 1rem; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+    }
+    @media (max-width: 400px) {
+      .listings-grid { grid-template-columns: 1fr; }
+      .steps { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-  <app-root></app-root>
+
+  <!-- ══ NAVIGATION ══ -->
+  <nav>
+    <div class="container">
+      <div class="nav-inner">
+        <div class="logo">étudi<span>annonces</span></div>
+        <div class="nav-links">
+          <a href="#">Entreprises</a>
+          <a href="#">Entre étudiants</a>
+          <a href="#">Auto-écoles</a>
+          <a href="#" class="nav-cta">Publier une annonce</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <!-- ══ HERO ══ -->
+    <section class="hero">
+      <div class="hero-badge">
+        <div class="dot"></div>
+        La plateforme d'annonces faite pour les étudiants
+      </div>
+      <h1>Tout ce dont tu as besoin,<br><em>au même endroit.</em></h1>
+      <p>Offres d'entreprises, échanges entre étudiants, auto-écoles — trouve ou publie une annonce en quelques secondes.</p>
+      <div class="hero-actions">
+        <button class="btn-primary">Parcourir les annonces</button>
+        <button class="btn-secondary">Publier gratuitement</button>
+      </div>
+      <div class="search-wrap">
+        <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="7.5" cy="7.5" r="5" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="11.4" y1="11.4" x2="15" y2="15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <input type="text" placeholder="Rechercher une annonce, un service, une offre…" />
+        <button class="search-btn">Rechercher</button>
+      </div>
+    </section>
+
+    <!-- ══ STATS ══ -->
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-num">2 400+</div>
+        <div class="stat-label">Annonces actives</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">380+</div>
+        <div class="stat-label">Entreprises partenaires</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">12 000+</div>
+        <div class="stat-label">Étudiants inscrits</div>
+      </div>
+    </div>
+
+    <!-- ══ 3 CATEGORIES ══ -->
+    <div class="section-heading">
+      <h2>Les 3 grandes catégories</h2>
+      <p>Navigue directement vers ce qui t'intéresse</p>
+    </div>
+
+    <div class="three-cols">
+
+      <!-- Card 1 : Entreprises -->
+      <div class="cat-card">
+        <div class="card-top">
+          <div class="icon-wrap green">
+            <svg width="27" height="27" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="3" y="7" width="18" height="13" rx="2" stroke="#1D9E75" stroke-width="1.5"/>
+              <path d="M8 7V5a4 4 0 0 1 8 0v2" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="8" y1="12" x2="16" y2="12" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="cat-badge green">147 offres</span>
+        </div>
+        <h3>Opportunités Entreprises</h3>
+        <p>Des offres exclusives vérifiées, publiées par des entreprises directement pour les étudiants.</p>
+        <div class="tag-list">
+          <span class="tag">Stages</span>
+          <span class="tag">Emplois étudiants</span>
+          <span class="tag">Réductions</span>
+          <span class="tag">Formations</span>
+          <span class="tag">Alternances</span>
+        </div>
+        <a href="#" class="cat-link green">Voir les offres →</a>
+      </div>
+
+      <!-- Card 2 : Étudiants -->
+      <div class="cat-card">
+        <div class="card-top">
+          <div class="icon-wrap orange">
+            <svg width="27" height="27" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="9" cy="8" r="3" stroke="#D85A30" stroke-width="1.5"/>
+              <circle cx="15" cy="8" r="3" stroke="#D85A30" stroke-width="1.5"/>
+              <path d="M3 19c0-3.3 2.7-6 6-6h6c3.3 0 6 2.7 6 6" stroke="#D85A30" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="cat-badge orange">834 annonces</span>
+        </div>
+        <h3>Échanges Entre Étudiants</h3>
+        <p>Vends, achète, coloque, covoiture ou propose un service directement à d'autres étudiants.</p>
+        <div class="tag-list">
+          <span class="tag">Livres &amp; cours</span>
+          <span class="tag">Colocation</span>
+          <span class="tag">Covoiturage</span>
+          <span class="tag">Soutien scolaire</span>
+          <span class="tag">Objets divers</span>
+        </div>
+        <a href="#" class="cat-link orange">Voir les annonces →</a>
+      </div>
+
+      <!-- Card 3 : Auto-écoles -->
+      <div class="cat-card">
+        <div class="card-top">
+          <div class="icon-wrap purple">
+            <svg width="27" height="27" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2" y="10" width="20" height="9" rx="2" stroke="#534AB7" stroke-width="1.5"/>
+              <circle cx="7" cy="19" r="2" stroke="#534AB7" stroke-width="1.5"/>
+              <circle cx="17" cy="19" r="2" stroke="#534AB7" stroke-width="1.5"/>
+              <path d="M6 10V7a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v3" stroke="#534AB7" stroke-width="1.5"/>
+              <circle cx="12" cy="14" r="1.5" fill="#534AB7"/>
+            </svg>
+          </div>
+          <span class="cat-badge purple">63 auto-écoles</span>
+        </div>
+        <h3>Auto-Écoles</h3>
+        <p>Compare les auto-écoles, trouve des offres spéciales étudiants et réserve tes leçons facilement.</p>
+        <div class="tag-list">
+          <span class="tag">Permis B</span>
+          <span class="tag">Conduite accompagnée</span>
+          <span class="tag">Moto</span>
+          <span class="tag">Code en ligne</span>
+          <span class="tag">Forfaits</span>
+        </div>
+        <a href="#" class="cat-link purple">Voir les auto-écoles →</a>
+      </div>
+
+    </div>
+
+    <!-- ══ HOW IT WORKS ══ -->
+    <div class="section-heading">
+      <h2>Comment ça marche ?</h2>
+      <p>Simple, rapide, gratuit pour les étudiants</p>
+    </div>
+    <div class="how-wrap">
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <h4>Crée ton compte</h4>
+          <p>Inscris-toi en 30 secondes avec ton adresse universitaire.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <h4>Explore ou publie</h4>
+          <p>Parcours les annonces ou dépose la tienne gratuitement.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <h4>Entre en contact</h4>
+          <p>Échange directement et en sécurité avec l'annonceur.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <h4>Profite !</h4>
+          <p>Trouve ton stage, ton colocataire ou ton auto-école idéale.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ LATEST LISTINGS ══ -->
+    <div class="section-heading">
+      <h2>Dernières annonces</h2>
+      <p>Publiées récemment par la communauté</p>
+    </div>
+    <div class="listings-grid">
+
+      <div class="listing-card">
+        <div class="listing-top">
+          <span class="listing-cat" style="background:var(--brand-light);color:var(--brand-dark);">Entreprise</span>
+          <span class="listing-time">il y a 2h</span>
+        </div>
+        <h4>Stage Marketing Digital — 6 mois</h4>
+        <div class="listing-meta">Paris 9e · Gratifié</div>
+        <div class="listing-price" style="color:var(--brand);">800 €/mois</div>
+      </div>
+
+      <div class="listing-card">
+        <div class="listing-top">
+          <span class="listing-cat" style="background:var(--accent-light);color:var(--accent-dark);">Étudiant</span>
+          <span class="listing-time">il y a 5h</span>
+        </div>
+        <h4>Vends pack Droit L1 — 8 manuels</h4>
+        <div class="listing-meta">Lyon · Bon état</div>
+        <div class="listing-price" style="color:var(--accent);">45 €</div>
+      </div>
+
+      <div class="listing-card">
+        <div class="listing-top">
+          <span class="listing-cat" style="background:var(--purple-light);color:var(--purple-dark);">Auto-école</span>
+          <span class="listing-time">il y a 1j</span>
+        </div>
+        <h4>Forfait 20h + code — offre étudiant</h4>
+        <div class="listing-meta">Toulouse · ★ 4.8</div>
+        <div class="listing-price" style="color:var(--purple);">890 €</div>
+      </div>
+
+      <div class="listing-card">
+        <div class="listing-top">
+          <span class="listing-cat" style="background:var(--accent-light);color:var(--accent-dark);">Étudiant</span>
+          <span class="listing-time">il y a 1j</span>
+        </div>
+        <h4>Coloc cherchée — appart 3 pièces</h4>
+        <div class="listing-meta">Bordeaux · Libre dès sept.</div>
+        <div class="listing-price" style="color:var(--accent);">380 €/mois</div>
+      </div>
+
+    </div>
+
+    <!-- ══ TRUST BANNER ══ -->
+    <div class="trust">
+      <h3>Une plateforme de confiance pour étudiants</h3>
+      <p>Toutes les annonces d'entreprises sont vérifiées. Les échanges entre étudiants sont accompagnés de conseils de sécurité.</p>
+      <div class="trust-items">
+        <span class="trust-item">✔ Annonces vérifiées</span>
+        <span class="trust-item">✔ Profils authentifiés</span>
+        <span class="trust-item">✔ Support disponible</span>
+        <span class="trust-item">✔ 100% gratuit pour les étudiants</span>
+      </div>
+    </div>
+
+  </div><!-- /container -->
+
+  <!-- ══ FOOTER ══ -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-logo">étudiantannonces</div>
+        <div class="footer-links">
+          <a href="#">À propos</a>
+          <a href="#">Contact</a>
+          <a href="#">CGU</a>
+          <a href="#">Confidentialité</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
 </body>
 </html>
